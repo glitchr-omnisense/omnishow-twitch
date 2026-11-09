@@ -1,0 +1,24 @@
+{
+  "data": [
+    {
+      "id": "40952121085",
+      "user_id": "141981764",
+      "user_login": "twitchdev",
+      "user_name": "TwitchDev",
+      "game_id": "509670",
+      "game_name": "Science & Technology",
+      "type": "live",
+      "title": "Building an extension, written by hand for the tests",
+      "tags": [
+        "English"
+      ],
+      "viewer_count": 321,
+      "started_at": "2026-11-09T18:00:05Z",
+      "language": "en",
+      "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_twitchdev-{width}x{height}.jpg",
+      "tag_ids": [],
+      "is_mature": false
+    }
+  ],
+  "pagination": {}
+}

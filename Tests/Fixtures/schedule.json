@@ -1,0 +1,44 @@
+{
+  "data": {
+    "segments": [
+      {
+        "id": "seg-2",
+        "start_time": "2026-11-17T18:00:00Z",
+        "end_time": "2026-11-17T20:00:00Z",
+        "title": "Office hours",
+        "canceled_until": "2026-11-17T20:00:00Z",
+        "category": {
+          "id": "509670",
+          "name": "Science & Technology"
+        },
+        "is_recurring": true
+      },
+      {
+        "id": "seg-1",
+        "start_time": "2026-11-10T18:00:00Z",
+        "end_time": "2026-11-10T20:00:00Z",
+        "title": "Office hours",
+        "canceled_until": null,
+        "category": {
+          "id": "509670",
+          "name": "Science & Technology"
+        },
+        "is_recurring": true
+      },
+      {
+        "id": "seg-3",
+        "start_time": "2026-11-12T16:00:00Z",
+        "end_time": "2026-11-12T17:00:00Z",
+        "title": "A one-off",
+        "canceled_until": null,
+        "category": null,
+        "is_recurring": false
+      }
+    ],
+    "broadcaster_id": "141981764",
+    "broadcaster_name": "TwitchDev",
+    "broadcaster_login": "twitchdev",
+    "vacation": null
+  },
+  "pagination": {}
+}
