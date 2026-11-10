@@ -32,6 +32,18 @@ A schedule's segment: `id`, `title`, `start_time` and `end_time` as scheduled, `
 broadcaster without a schedule answers 404 ("The broadcaster has not created a streaming
 schedule."): an empty list. `vacation` is not read.
 
+## Usage policy
+
+The package declares Twitch's usage policy as data, in [policy.json](../policy.json)
+(omnisense/contracts' schema, read at its sources on 2026-11-10): rate limits Helix's points bucket,
+refilled every minute, whose size is not stated as policy: unknown; Twitch content cached 24 hours
+at most, no re-syndication nor redistribution, no selling or monetizing its data without an
+agreement, a clear path to the source from every display. Through omnishow's registry every call is
+held to it: a site's own limit is counted; a 429 holds every call until its wait is over, a 429 and
+its `Retry-After` hold every next call until the wait is over (`UsageLimitReachedException`), and a
+site may tighten the policy in its configuration (`'policy' => [...]`), never loosen it. What the
+terms do not say is declared unknown; the sources and the details are in the file's `provenance`.
+
 ## Errors
 
 An unknown login: null, or an empty schedule. Any other error status is a `ProviderException`

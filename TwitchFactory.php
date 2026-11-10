@@ -41,6 +41,6 @@ final class TwitchFactory extends ProviderFactory
             throw new InvalidConfigException('The "twitch" provider needs: client_secret or token.');
         }
 
-        return new TwitchProvider(new JsonClient($this->http ?? HttpClient::create(['timeout' => 20]), 'Twitch', ['Accept' => 'application/json']), (string) $c->string('client_id'), $c->string('client_secret'), $c->string('token'), (string) $c->string('api'), (string) $c->string('token_url'));
+        return new TwitchProvider(new JsonClient($this->http ?? HttpClient::create(['timeout' => 20]), 'Twitch', ['Accept' => 'application/json'], $c->backoff()), (string) $c->string('client_id'), $c->string('client_secret'), $c->string('token'), (string) $c->string('api'), (string) $c->string('token_url'));
     }
 }

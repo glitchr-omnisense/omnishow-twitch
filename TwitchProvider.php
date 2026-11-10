@@ -2,6 +2,8 @@
 
 namespace Omnishow\Twitch;
 
+use Omnisense\Contracts\Policy\DeclaresUsagePolicyInterface;
+use Omnisense\Contracts\Policy\UsagePolicy;
 use Omnishow\Capabilities;
 use Omnishow\Exception\ProviderException;
 use Omnishow\Http\Data;
@@ -24,8 +26,13 @@ use Omnishow\ProviderInterface;
  * the name in its address (twitch.tv/<login>). Its player needs the
  * embedding page's domain: Stream::embed(parent: 'example.org').
  */
-final class TwitchProvider implements ProviderInterface, LiveInterface
+final class TwitchProvider implements ProviderInterface, LiveInterface, DeclaresUsagePolicyInterface
 {
+    /** Twitch's usage policy, as its terms read on the day it says (provenance.verifiedAt). */
+    public const POLICY = __DIR__.'/policy.json';
+
+    private static ?UsagePolicy $policy = null;
+
     private ?string $appToken = null;
 
     private int $expires = 0;
@@ -52,6 +59,11 @@ final class TwitchProvider implements ProviderInterface, LiveInterface
         return 'Twitch';
     }
 
+    public function usagePolicy(): UsagePolicy
+    {
+        return self::$policy ??= UsagePolicy::fromFile(self::POLICY);
+    }
+
     public function capabilities(): Capabilities
     {
         return new Capabilities(
@@ -60,6 +72,7 @@ final class TwitchProvider implements ProviderInterface, LiveInterface
             live: true,
             schedule: true,
             platforms: [Platform::Twitch],
+            policy: $this->usagePolicy(),
         );
     }
 

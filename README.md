@@ -26,6 +26,18 @@ Options: `client_id` (required), and `client_secret` (an app access token is ask
 access token got elsewhere, sent as it is); `api` (`https://api.twitch.tv/helix/`), `token_url`. See
 [docs/index.md](docs/index.md).
 
+## Usage policy
+
+The package declares Twitch's usage policy as data, in [policy.json](policy.json)
+(omnisense/contracts' schema, read at its sources on 2026-11-10): rate limits Helix's points bucket,
+refilled every minute, whose size is not stated as policy: unknown; Twitch content cached 24 hours
+at most, no re-syndication nor redistribution, no selling or monetizing its data without an
+agreement, a clear path to the source from every display. Through omnishow's registry every call is
+held to it: a site's own limit is counted; a 429 holds every call until its wait is over, a 429 and
+its `Retry-After` hold every next call until the wait is over (`UsageLimitReachedException`), and a
+site may tighten the policy in its configuration (`'policy' => [...]`), never loosen it. What the
+terms do not say is declared unknown; the sources and the details are in the file's `provenance`.
+
 ## Responsibility
 
 This package is an independent, unofficial client: it is not affiliated with, endorsed by or

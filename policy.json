@@ -1,0 +1,39 @@
+{
+    "$schema": "https://github.com/glitchr-omnisense/contracts/blob/1.x/resources/usage-policy.schema.json",
+    "provider": "twitch",
+    "rateLimits": null,
+    "rights": {
+        "commercial": "allowed",
+        "openSourceRequired": false,
+        "caching": {
+            "permission": "allowed",
+            "maxTtl": 86400
+        },
+        "storage": "forbidden",
+        "redistribution": "forbidden",
+        "attribution": {
+            "required": true,
+            "text": "Twitch",
+            "url": "https://www.twitch.tv/",
+            "where": [
+                "display"
+            ]
+        },
+        "licence": null
+    },
+    "requirements": {
+        "key": true,
+        "userAgent": {
+            "required": false,
+            "pattern": null
+        }
+    },
+    "provenance": {
+        "terms": "https://legal.twitch.com/en/legal/developer-agreement/",
+        "policy": "https://dev.twitch.tv/docs/api/guide#twitch-rate-limits",
+        "verifiedAt": "2026-11-10",
+        "declaredBy": "maintainer",
+        "contact": "https://discuss.dev.twitch.com/",
+        "notes": "Helix counts POINTS in a token bucket refilled every minute, one bucket for app access requests and one per user for user access requests; a request costs 1 point unless its endpoint says otherwise. The bucket's size is not stated as policy (800 appears in the guide's example header): not declared. Twitch's Ratelimit-Limit, Ratelimit-Remaining and Ratelimit-Reset headers are not the IETF fields the guard reads; a 429 is honoured. Developer Agreement (2024-12-04): Twitch content cached 24 hours at most and not shared, deleted items removed; re-syndicating or redistributing API data is prohibited, and Twitch data may not be sold, licensed or monetized absent a separate agreement; ads beside embeds only with other content of substantial value; a clear path to the source from every display, Twitch marks used only to attribute (twitch.tv/p/legal/trademark). Every request carries the Client-Id and an access token."
+    }
+}
