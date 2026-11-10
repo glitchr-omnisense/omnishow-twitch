@@ -79,6 +79,35 @@ final class PolicyTest extends TestCase
         self::assertCount(1, $http->requests, 'the wait held the next request back');
     }
 
+    public function testAnEmptyBucketHoldsEveryCallUntilItsReset(): void
+    {
+        // Ratelimit-Reset is a Unix time (the API guide): read as one, not as seconds.
+        $http = RecordedHttpClient::routes(['~.~' => [200, '{"data":[]}', ['ratelimit-limit' => ['800'], 'ratelimit-remaining' => ['0'], 'ratelimit-reset' => [(string) (time() + 30)]]]]);
+        $registry = new Registry([new TwitchFactory($http)], ['films' => ['factory' => 'twitch', 'options' => self::OPTIONS]]);
+
+        $registry->live('films')->live('example');
+        $made = \count($http->requests);
+        try {
+            $registry->live('films')->live('example');
+            self::fail('A call went out with no point left.');
+        } catch (UsageLimitReachedException $e) {
+            self::assertGreaterThanOrEqual(28, $e->retryAfter);
+            self::assertLessThanOrEqual(31, $e->retryAfter, 'the reset read as a Unix time');
+        }
+        self::assertCount($made, $http->requests, 'the empty bucket held the next request back');
+    }
+
+    public function testASiteDeclaresItsBucketInPoints(): void
+    {
+        $http = RecordedHttpClient::routes(['~.~' => [200, '{"data":[]}']]);
+        $registry = new Registry([new TwitchFactory($http)], ['films' => ['factory' => 'twitch', 'options' => self::OPTIONS, 'policy' => ['rateLimits' => [['max' => 800, 'window' => 'minute', 'unit' => 'points', 'cost' => ['schedule' => 2]]]]]]);
+
+        self::assertSame(['800/minute/application/*/points/schedule=2'], array_map(static fn ($l) => $l->id(), $registry->policy('films')->rateLimits ?? []));
+        $registry->live('films')->live('example');
+        self::assertSame(799, $registry->guard('films')->remaining('live'), 'a request costs 1 point');
+        self::assertSame(399, $registry->guard('films')->remaining('schedule'), 'schedule makes two');
+    }
+
     public function testASiteCannotLoosenThePolicy(): void
     {
         $registry = new Registry([new TwitchFactory(RecordedHttpClient::routes([]))], ['films' => ['factory' => 'twitch', 'options' => self::OPTIONS, 'policy' => ['rights' => ['redistribution' => 'allowed']]]]);

@@ -2,6 +2,14 @@
 
 ## Unreleased (1.x)
 
+### Changed
+- The factory's JsonClient reads Twitch's `Ratelimit-Remaining` and `Ratelimit-Reset` as legacy
+  fields, the reset a Unix time (`Backoff::withLegacyHeaders(LegacyReset::Epoch)`; the API guide:
+  "A Unix epoch timestamp"): a bucket with no point left holds every call until its reset, before
+  Twitch answers 429. The policy's note says how a site declares its bucket in points (`"unit":
+  "points"`, `schedule` costing 2). Needs omnisense/contracts at 5bac28b or later (still
+  `^1.0@dev`, untagged).
+
 ### Added
 - Twitch's usage policy declared as data in `policy.json` (omnisense/contracts' schema, read on
   2026-11-10): the points bucket's size unknown (not stated as policy), content cached 24 hours at

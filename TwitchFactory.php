@@ -2,6 +2,7 @@
 
 namespace Omnishow\Twitch;
 
+use Omnisense\Contracts\Policy\LegacyReset;
 use Omnishow\Config;
 use Omnishow\Exception\InvalidConfigException;
 use Omnishow\Http\JsonClient;
@@ -15,6 +16,10 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
  * token is asked with it, and asked again when it expires) or token (an
  * access token got elsewhere); api ("https://api.twitch.tv/helix/"),
  * token_url ("https://id.twitch.tv/oauth2/token").
+ *
+ * Its JsonClient reads Twitch's Ratelimit-Remaining and Ratelimit-Reset
+ * (a Unix time, as the API guide says): an empty bucket holds every call
+ * until it is full again, before Twitch has to answer 429.
  */
 final class TwitchFactory extends ProviderFactory
 {
@@ -41,6 +46,6 @@ final class TwitchFactory extends ProviderFactory
             throw new InvalidConfigException('The "twitch" provider needs: client_secret or token.');
         }
 
-        return new TwitchProvider(new JsonClient($this->http ?? HttpClient::create(['timeout' => 20]), 'Twitch', ['Accept' => 'application/json'], $c->backoff()), (string) $c->string('client_id'), $c->string('client_secret'), $c->string('token'), (string) $c->string('api'), (string) $c->string('token_url'));
+        return new TwitchProvider(new JsonClient($this->http ?? HttpClient::create(['timeout' => 20]), 'Twitch', ['Accept' => 'application/json'], $c->backoff()?->withLegacyHeaders(LegacyReset::Epoch)), (string) $c->string('client_id'), $c->string('client_secret'), $c->string('token'), (string) $c->string('api'), (string) $c->string('token_url'));
     }
 }

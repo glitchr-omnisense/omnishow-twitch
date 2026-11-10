@@ -30,7 +30,11 @@ access token got elsewhere, sent as it is); `api` (`https://api.twitch.tv/helix/
 
 The package declares Twitch's usage policy as data, in [policy.json](policy.json)
 (omnisense/contracts' schema, read at its sources on 2026-11-10): rate limits Helix's points bucket,
-refilled every minute, whose size is not stated as policy: unknown; Twitch content cached 24 hours
+refilled every minute, whose size is not stated as policy: unknown (a site that knows its bucket
+declares it in points, `{"max": 800, "window": "minute", "unit": "points", "cost": {"schedule": 2}}`:
+schedule makes two requests); `Ratelimit-Remaining`
+and `Ratelimit-Reset` (a Unix time) read on every answer, an empty bucket holding every call until
+its reset; Twitch content cached 24 hours
 at most, no re-syndication nor redistribution, no selling or monetizing its data without an
 agreement, a clear path to the source from every display. Through omnishow's registry every call is
 held to it: a site's own limit is counted; a 429 holds every call until its wait is over, a 429 and
