@@ -26,6 +26,18 @@ Options: `client_id` (required), and `client_secret` (an app access token is ask
 access token got elsewhere, sent as it is); `api` (`https://api.twitch.tv/helix/`), `token_url`. See
 [docs/index.md](docs/index.md).
 
+## Install
+
+```sh
+composer require omnishow/twitch
+```
+
+It requires `omnisense/omnishow` `^1.0`, installed with it. A real call needs: **a Twitch
+application** (client id and secret for an app token, or a client id and a user token). With no
+account, its tests run on recorded answers (a `MockHttpClient`), and
+[omnisense/omnishow](https://github.com/glitchr-omnisense/omnishow#install-and-a-first-call)'s
+README has a first call that runs without one.
+
 ## Usage policy
 
 The package declares Twitch's usage policy as data, in [policy.json](policy.json)
